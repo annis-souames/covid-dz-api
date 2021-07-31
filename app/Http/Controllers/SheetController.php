@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Google\Client;
 use Google\Service\Sheets\ValueRange;
+use Illuminate\Http\Response;
 use Laravel\Lumen\Http\Request;
 use Revolution\Google\Sheets\Facades\Sheets;
 use Google_Client;
@@ -37,7 +38,7 @@ class SheetController extends Controller
         $response = $service->spreadsheets_values->get($spreadsheetID, $range);
         $values = $response->getValues();
         $response = $this->buildJSONResponse($values);
-        return $response;
+        return response()->json($response,200,[], JSON_UNESCAPED_UNICODE);
     }
 
     /**

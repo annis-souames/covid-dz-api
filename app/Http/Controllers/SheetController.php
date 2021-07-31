@@ -41,6 +41,16 @@ class SheetController extends Controller
         return response()->json($response,200,[], JSON_UNESCAPED_UNICODE);
     }
 
+    public function getLovenox(Request $request){
+        $service = $this->createGoogleService();
+        $spreadsheetID = "1qB3V0aB7u8KICw0G3x78-r3J1MVxSQgConeONS9j8Iw";
+        $range = "Sheet1";
+        $response = $service->spreadsheets_values->get($spreadsheetID, $range);
+        $values = $response->getValues();
+        $response = $this->buildJSONResponse($values);
+        return response()->json($response,200,[], JSON_UNESCAPED_UNICODE);
+    }
+
     /**
      * @param $values
      * Convert $values 2D array into a JSON response
@@ -55,6 +65,10 @@ class SheetController extends Controller
             //dd($headers);
             foreach ($row as $i=>$colValue){
                 $header = $headers[$i];
+                if ($colValue == "NA")
+                {
+                    $colValue = "";
+                }
                 $rowObj[$header] = $colValue;
             }
             array_push($resp,$rowObj);

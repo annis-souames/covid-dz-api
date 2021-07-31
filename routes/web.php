@@ -14,14 +14,13 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return "API used in Covid 19 Info Algerie website : https://info-covid19-algerie.com/";
 });
 
-$router->get('/key', function() {
-    return \Illuminate\Support\Str::random(32);
-});
+
 
 $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('oxygen',  ['uses' => 'SheetController@getOxygen']);
+    $router->get('lovenox', ["uses"=> 'SheetController@getLovenox']);
 
 });

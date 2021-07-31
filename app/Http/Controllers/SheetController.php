@@ -10,17 +10,12 @@ use Google_Client;
 class SheetController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * Create a new Google client instance and set up the account service
      *
-     * @return void
+     * @return \Google_Service_Sheets
      */
-    public function getOxygen(Request $request)
+    public function createGoogleService()
     {
-
-        /**
-        $sheets = new Sheets();
-        $sheets->setService($service);
-        */
 
         $client = new Google_Client();
 
@@ -32,6 +27,11 @@ class SheetController extends Controller
         $client->setAuthConfig(storage_path('credentials.json'));
 
         $service = new \Google_Service_Sheets($client);
+        return $service;
+    }
+    public function getOxygen(Request $request)
+    {
+        $service = $this->createGoogleService();
         $spreadsheetID = "1a4N_yGTUOmGVFRLODbfv6NNJO7hcgdXpayRFSufj1sk";
         $range = "Sheet1";
         $response = $service->spreadsheets_values->get($spreadsheetID, $range);

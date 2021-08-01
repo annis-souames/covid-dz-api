@@ -33,11 +33,13 @@ class SheetController extends Controller
     public function getOxygen(Request $request)
     {
         $service = $this->createGoogleService();
-        $spreadsheetID = "1a4N_yGTUOmGVFRLODbfv6NNJO7hcgdXpayRFSufj1sk";
-        $range = "Sheet1";
-        $response = $service->spreadsheets_values->get($spreadsheetID, $range);
+        $spreadsheetID = "1c0MaJsvSgtCdyFwv4Wigp_y9DB7BsefMC5I8WSk68fc";
+        $range = "SheetOxy";
+        $response = $service->spreadsheets_values->get($spreadsheetID,$range);
+
         $values = $response->getValues();
         $response = $this->buildJSONResponse($values);
+        //dd($response);
         return response()->json($response,200,[], JSON_UNESCAPED_UNICODE);
     }
 
@@ -57,6 +59,7 @@ class SheetController extends Controller
      */
     public function buildJSONResponse($values){
         $resp = [];
+        //dd($values);
         $headers = $values[0];
         $data = array_slice($values,1);
 
@@ -65,7 +68,7 @@ class SheetController extends Controller
             //dd($headers);
             foreach ($row as $i=>$colValue){
                 $header = $headers[$i];
-                if ($colValue == "NA")
+                if ($colValue == "NA" || $colValue == "na")
                 {
                     $colValue = "";
                 }
